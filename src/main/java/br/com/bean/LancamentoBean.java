@@ -7,6 +7,7 @@ import br.com.repository.IDaoLancamento;
 import br.com.repository.IDaoLancamentoImpl;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
@@ -31,6 +32,7 @@ public class LancamentoBean {
         dao.salvar(lancamento);
         lancamento = new Lancamento();
         carregarLancamentos();
+        mMsg("Cadastro realizado");
         return "";
     }
 
@@ -38,6 +40,12 @@ public class LancamentoBean {
         lancamento = new Lancamento();
         carregarLancamentos();
         return "";
+    }
+
+    public void mMsg(String msg){
+        FacesContext context = FacesContext.getCurrentInstance();
+        FacesMessage message = new FacesMessage(msg);
+        context.addMessage(null,message);
     }
 
     @PostConstruct

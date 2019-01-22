@@ -19,9 +19,13 @@
 
         <h:panelGrid columns="2">
 
+
+            <h:messages infoStyle="margin-left: 30%;margin-top:
+            10%;color: #fff;background-color: aquamarine;width: 300px;height: 300px;font-size: 22px" />
             <f:facet name="header">
                 <h:outputText value="Lancamento de notas"/>
             </f:facet>
+            <h:outputText/>
 
             <h:outputText value="ID"/>
             <h:inputText value="#{lancamentoBean.lancamento.id}" readonly="true"/>
@@ -34,6 +38,20 @@
 
             <h:outputText value="Empresa de destino"/>
             <h:inputText value="#{lancamentoBean.lancamento.empresaDestino}"/>
+
+            <h:outputLabel value="Auditada"/>
+            <h:selectOneRadio value="#{lancamentoBean.lancamento.auditada}">
+                <f:selectItem itemValue="auditada" itemLabel="Auditada"/>
+                <f:selectItem itemValue="nao auditada" itemLabel="Não auditada"/>
+            </h:selectOneRadio>
+
+            <h:outputText value="Transportadora"/>
+            <h:selectManyCheckbox value="#{lancamentoBean.lancamento.transportadora}">
+                <f:selectItem itemValue="queroz" itemLabel="Queiroz"/>
+                <f:selectItem itemValue="peixoto" itemLabel="Peixoto"/>
+                <f:selectItem itemValue="amaral" itemLabel="Amaral"/>
+                <f:selectItem itemValue="agua_clara" itemLabel="Água Clara"/>
+            </h:selectManyCheckbox>
 
             <h:panelGrid columns="3">
                 <h:commandButton value="Novo" action="#{lancamentoBean.novo}"/>
@@ -68,6 +86,12 @@
                 </f:facet>
                 <h:outputText value="#{l.empresaDestino}"/>
             </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Nota auditada"/>
+                </f:facet>
+                <h:outputText value="#{l.auditada}"/>
+            </h:column>
             <h:column rendered="#{usuarioBean.permiteAcesso('adm')}">
                 <f:facet name="header">
                     <h:outputText value="Ações"/>
@@ -77,7 +101,7 @@
                     <f:setPropertyActionListener value="#{l}" target="#{lancamentoBean.lancamento}"/>
                 </h:commandLink>
                 <h:commandLink title="remover" action="#{lancamentoBean.remover}">
-                    <h:graphicImage value="/resources/img/lixo.png"  height="30" width="30"/>
+                    <h:graphicImage value="/resources/img/lixo.png" height="30" width="30"/>
                     <f:setPropertyActionListener value="#{l}" target="#{lancamentoBean.lancamento}"/>
                 </h:commandLink>
             </h:column>

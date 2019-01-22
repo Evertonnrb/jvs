@@ -2,10 +2,11 @@ package br.com.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 @Entity(name = "lancamento")
-@Table(name = "lancamento",schema = "public")
+@Table(name = "lancamento", schema = "public")
 public class Lancamento implements Serializable {
 
     @Id
@@ -18,6 +19,8 @@ public class Lancamento implements Serializable {
     @ManyToOne(optional = false)
     @org.hibernate.annotations.ForeignKey(name = "usuario_fk")
     private Usuario usuario;
+    private String auditada;
+    private String[] transportadora;
 
     public Long getId() {
         return id;
@@ -57,6 +60,22 @@ public class Lancamento implements Serializable {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    public String getAuditada() {
+        return auditada;
+    }
+
+    public void setAuditada(String auditada) {
+        this.auditada = auditada;
+    }
+
+    public String[] getTransportadora() {
+        return transportadora;
+    }
+
+    public void setTransportadora(String[] transportadora) {
+        this.transportadora = transportadora;
     }
 
     @Override
