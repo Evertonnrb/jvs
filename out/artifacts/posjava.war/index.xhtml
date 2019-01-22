@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Login</title>
+</h:head>
+<h:body>
+    <h:form style="margin-left: 40%;margin-top: 10%">
+        <h:panelGrid columns="2">
+            <h:outputText value="Entrar no sistema"/>
+            <h:outputText/>
+            <h:outputText value="Login"/>
+            <h:inputText value="#{usuarioBean.usuario.email}"/>
+            <h:outputText value="Senha"/>
+            <h:inputSecret value="#{usuarioBean.usuario.senha}"/>
+            <h:commandButton value="Logar" action="#{usuarioBean.logar}"/>
+        </h:panelGrid>
+    </h:form>
+</h:body>
+</html>

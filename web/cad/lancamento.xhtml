@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Pagina de lançamentos</title>
+</h:head>
+<h:body>
+    <h:form>
+        <h:commandLink value="Home" action="/teste" style="margin-left: 10px"/>
+        <h:commandLink value="Usuarios" action="usuarios" style="margin-left: 10px"/>
+        <h:commandLink value="Trocar usuario" action="/index" style="margin-left: 10px"/>
+    </h:form>
+
+    <h:form id="frmLancamento">
+
+        <h:panelGrid columns="2">
+
+            <f:facet name="header">
+                <h:outputText value="Lancamento de notas"/>
+            </f:facet>
+
+            <h:outputText value="ID"/>
+            <h:inputText value="#{lancamentoBean.lancamento.id}" readonly="true"/>
+
+            <h:outputText value="Número da nota fiscal"/>
+            <h:inputText value="#{lancamentoBean.lancamento.numeroNotaFiscal}"/>
+
+            <h:outputText value="Empresa de origem"/>
+            <h:inputText value="#{lancamentoBean.lancamento.empresaOrigem}"/>
+
+            <h:outputText value="Empresa de destino"/>
+            <h:inputText value="#{lancamentoBean.lancamento.empresaDestino}"/>
+
+            <h:panelGrid columns="3">
+                <h:commandButton value="Novo" action="#{lancamentoBean.novo}"/>
+                <h:commandButton value="Cadastar nota" action="#{lancamentoBean.salvar}"/>
+                <h:commandButton value="Limpar" type="reset"/>
+            </h:panelGrid>
+
+        </h:panelGrid>
+
+    </h:form>
+
+</h:body>
+</html>

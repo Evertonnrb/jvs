@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Cadastro de usuarios</title>
+</h:head>
+<h:body>
+
+    <h:form>
+        <h:commandLink value="Home" action="/teste" style="margin-left: 10px"/>
+        <h:commandLink value="Lancamento" action="lancamento" style="margin-left: 10px"/>
+        <h:commandLink value="Trocar usuario" action="/index" style="margin-left: 10px"/>
+    </h:form>
+
+    <h:form>
+        <h1>Cadastrar pessoal</h1>
+        <h:panelGrid columns="2">
+
+            <h:outputText value="ID"/>
+            <h:inputText value="#{usuarioBean.usuario.id}" readonly="true"/>
+
+            <h:outputText value="Nome:"/>
+            <h:inputText value="#{usuarioBean.usuario.nome}"/>
+
+            <h:outputText value="Sobrenome"/>
+            <h:inputText value="#{usuarioBean.usuario.sobrenome}"/>
+
+            <h:outputText value="Email"/>
+            <h:inputText value="#{usuarioBean.usuario.email}"/>
+
+            <h:outputText value="Senha"/>
+            <h:inputSecret value="#{usuarioBean.usuario.senha}"/>
+
+            <h:outputText value="Perfil"/>
+            <h:selectOneMenu value="#{usuarioBean.usuario.perfil}">
+                <f:selectItem itemValue="Selecione" itemLabel="Selecione" noSelectionOption="true"/>
+                <f:selectItem itemValue="adm" itemLabel="Administrador"/>
+                <f:selectItem itemValue="caixa" itemLabel="Caixa"/>
+                <f:selectItem itemValue="usuario_comum" itemLabel="Usuario"/>
+            </h:selectOneMenu>
+
+            <h:outputText value="Idade"/>
+            <h:inputText value="#{usuarioBean.usuario.idade}"/>
+
+            <h:outputText value="Sexo"/>
+            <h:selectOneMenu id="campoSexo">
+                <f:selectItem itemValue="Selecione" noSelectionOption="true"/>
+                <f:selectItem itemLabel="Masculino" itemValue="masculino"/>
+                <f:selectItem itemLabel="Feminino" itemValue="feminino"/>
+            </h:selectOneMenu>
+
+            <h:outputText value="Ativo"/>
+            <h:selectBooleanCheckbox value="#{usuarioBean.usuario.ativo}"/>
+
+            <h:outputText value="Frameworks"/>
+            <h:selectManyMenu id="frmFrameworks" value="#{usuarioBean.usuario.frameworks}" style="height: 150px">
+                <f:selectItem itemValue="hibernate" itemLabel="Hibernate"/>
+                <f:selectItem itemValue="jpa" itemLabel="JPA"/>
+                <f:selectItem itemLabel="spring" itemValue="Spring"/>
+                <f:selectItem itemLabel="spring-data" itemValue="Spring Data"/>
+                <f:selectItem itemLabel="spring-orm" itemValue="Srping ORM"/>
+                <f:selectItem itemLabel="spring-boot" itemValue="Spring BOOT"/>
+            </h:selectManyMenu>
+
+            <h:panelGrid columns="5">
+                <h:commandButton action="#{usuarioBean.novo}" value="Novo"/>
+                <h:commandButton action="#{usuarioBean.merge}" value="Cadastrar"/>
+                <h:commandButton action="#{usuarioBean.removeBean}" value="Remover"/>
+                <h:commandButton action="#{usuarioBean.removerBeanPorId}" value="Deletar por id"/>
+                <h:commandButton type="reset" value="Limpar"/>
+            </h:panelGrid>
+
+        </h:panelGrid>
+
+        <h:dataTable value="#{usuarioBean.usuarios}" var="u"
+                     cellpadding="5" cellspacing="3" border="1"
+                     rendered="#{usuarioBean.permiteAcesso('adm')}">
+            <f:facet name="Lista de usuarios cadastrados"/>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="ID"/>
+                </f:facet>
+                <h:outputText value="#{u.id}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Nome"/>
+                </f:facet>
+                <h:outputText value="#{u.nome}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Sobrenome"/>
+                </f:facet>
+                <h:outputText value="#{u.sobrenome}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Sexo"/>
+                </f:facet>
+                <h:outputText value="#{u.sexo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Email"/>
+                </f:facet>
+                <h:outputText value="#{u.email}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Senha"/>
+                </f:facet>
+                <h:outputText value="#{u.senha}"/>
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Ação"/>
+                </f:facet>
+                <h:commandLink>
+                    <f:setPropertyActionListener value="#{u}" target="#{usuarioBean.usuario}"/>
+                    <h:graphicImage library="img" name="save.png"/>
+                </h:commandLink>
+
+                <h:commandLink>
+                    <f:setPropertyActionListener value="#{u}" target="#{usuarioBean.removerBeanPorId}"/>
+                    <h:graphicImage library="img" name="lixo.png"/>
+                </h:commandLink>
+            </h:column>
+        </h:dataTable>
+
+    </h:form>
+</h:body>
+</html>
+
+
+
