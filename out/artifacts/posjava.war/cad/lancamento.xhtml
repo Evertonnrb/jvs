@@ -43,6 +43,46 @@
 
         </h:panelGrid>
 
+        <h:dataTable value="#{lancamentoBean.lancamentos}" var="l" cellspacing="3" border="1">
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="ID"/>
+                </f:facet>
+                <h:outputText value="#{l.id}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Cod"/>
+                </f:facet>
+                <h:outputText value="#{l.numeroNotaFiscal}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Empresa de Origem"/>
+                </f:facet>
+                <h:outputText value="#{l.empresaOrigem}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Empresa de Destino"/>
+                </f:facet>
+                <h:outputText value="#{l.empresaDestino}"/>
+            </h:column>
+            <h:column rendered="#{usuarioBean.permiteAcesso('adm')}">
+                <f:facet name="header">
+                    <h:outputText value="Ações"/>
+                </f:facet>
+                <h:commandLink title="Editar">
+                    <h:graphicImage value="/resources/img/edit.png" height="30" width="30"/>
+                    <f:setPropertyActionListener value="#{l}" target="#{lancamentoBean.lancamento}"/>
+                </h:commandLink>
+                <h:commandLink title="remover" action="#{lancamentoBean.remover}">
+                    <h:graphicImage value="/resources/img/lixo.png"  height="30" width="30"/>
+                    <f:setPropertyActionListener value="#{l}" target="#{lancamentoBean.lancamento}"/>
+                </h:commandLink>
+            </h:column>
+        </h:dataTable>
+
     </h:form>
 
 </h:body>
