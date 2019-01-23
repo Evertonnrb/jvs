@@ -12,6 +12,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,6 +64,9 @@ public class LancamentoBean {
         return "";
     }
 
+    public void consultarCep(AjaxBehaviorEvent event){
+        System.out.printf("metodo executado "+lancamento.getCep());
+    }
 
     public Lancamento getLancamento() {
         return lancamento;

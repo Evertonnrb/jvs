@@ -9,19 +9,13 @@
     <title>Pagina de lançamentos</title>
 </h:head>
 <h:body>
-    <h:form>
-        <h:commandLink value="Home" action="/teste" style="margin-left: 10px"/>
-        <h:commandLink value="Usuarios" action="usuarios" style="margin-left: 10px"/>
-        <h:commandLink value="Trocar usuario" action="/index" style="margin-left: 10px"/>
-    </h:form>
+    <ui:include src="/includes/menu.xhtml"/>
 
-    <h:form id="frmLancamento">
+    <h:form id="frmCadastroLancamento">
 
         <h:panelGrid columns="2">
-
-
             <h:messages infoStyle="margin-left: 30%;margin-top:
-            10%;color: #fff;background-color: aquamarine;width: 300px;height: 300px;font-size: 22px" />
+            10%;color: #fff;background-color: aquamarine;width: 300px;height: 300px;font-size: 22px"/>
             <f:facet name="header">
                 <h:outputText value="Lancamento de notas"/>
             </f:facet>
@@ -31,22 +25,40 @@
             <h:inputText value="#{lancamentoBean.lancamento.id}" readonly="true"/>
 
             <h:outputText value="Número da nota fiscal"/>
-            <h:inputText value="#{lancamentoBean.lancamento.numeroNotaFiscal}"/>
+            <h:inputText value="#{lancamentoBean.lancamento.numeroNotaFiscal}" required="true"
+                         validatorMessage="Número da nota deve ter no min 3 e no maxímo 50 carteres"
+                         requiredMessage="Número da nota deve ser informado">
+                <f:validateLength minimum="8" maximum="50"/>
+            </h:inputText>
 
-            <h:outputText value="Empresa de origem"/>
-            <h:inputText value="#{lancamentoBean.lancamento.empresaOrigem}"/>
+            <h:outputText value="Empresa de origem" />
+            <h:inputText value="#{lancamentoBean.lancamento.empresaOrigem}" required="true" validatorMessage="Nome da empresa de origem inválido">
+                <f:validateLength minimum="3" maximum="50"/>
+            </h:inputText>
 
             <h:outputText value="Empresa de destino"/>
-            <h:inputText value="#{lancamentoBean.lancamento.empresaDestino}"/>
+            <h:inputText value="#{lancamentoBean.lancamento.empresaDestino}" required="true" validatorMessage="Nome da empresa de destino inválido">
+                <f:validateLength maximum="3" minimum="50"/>
+            </h:inputText>
 
             <h:outputLabel value="Auditada"/>
-            <h:selectOneRadio value="#{lancamentoBean.lancamento.auditada}">
+            <h:selectOneRadio value="#{lancamentoBean.lancamento.auditada}" required="true">
                 <f:selectItem itemValue="auditada" itemLabel="Auditada"/>
                 <f:selectItem itemValue="nao auditada" itemLabel="Não auditada"/>
             </h:selectOneRadio>
 
+            <h:outputText value="Data de vencimento"/>
+            <h:inputText value="#{lancamentoBean.lancamento.dataVecimento}" converterMessage="Formato da data inválido" required="true">
+                <f:convertDateTime pattern="dd/MM/yyyy" dateStyle="full" locale="pt_BR" timeZone="GMT-03:00"/>
+            </h:inputText>
+
+            <h:outputText value="CEP"/>
+            <h:inputText value="#{lancamentoBean.lancamento.cep}" id="cep">
+                <f:ajax event="blur" execute="this" listener="#{lancamentoBean.consultarCep}"/>
+            </h:inputText>
+
             <h:outputText value="Transportadora"/>
-            <h:selectManyCheckbox value="#{lancamentoBean.lancamento.transportadora}">
+            <h:selectManyCheckbox value="#{lancamentoBean.lancamento.transportadora}" required="true" validatorMessage="Selecione ao menos uma transportadora">
                 <f:selectItem itemValue="queroz" itemLabel="Queiroz"/>
                 <f:selectItem itemValue="peixoto" itemLabel="Peixoto"/>
                 <f:selectItem itemValue="amaral" itemLabel="Amaral"/>
@@ -54,13 +66,19 @@
             </h:selectManyCheckbox>
 
             <h:panelGrid columns="3">
-                <h:commandButton value="Novo" action="#{lancamentoBean.novo}"/>
-                <h:commandButton value="Cadastar nota" action="#{lancamentoBean.salvar}"/>
-                <h:commandButton value="Limpar" type="reset"/>
+                <h:commandButton id="btNovo" value="Novo" action="#{lancamentoBean.novo}">
+                    <f:ajax execute="btNovo" render="frmCadastroLancamento"/>
+                </h:commandButton>
+                <h:commandButton id="btCadastrar" value="Cadastar nota" action="#{lancamentoBean.salvar}">
+                    <f:ajax execute="btCadastrar" render="frmCadastroLancamento"/>
+                </h:commandButton>
+                <h:commandButton id="btLimpar"  value="Limpar" type="reset">
+                    <f:ajax execute="btLimpar" render="frmCadastroLancamento"/>
+                </h:commandButton>
             </h:panelGrid>
-
         </h:panelGrid>
-
+    </h:form>
+    <h:form id="frmLancamento">
         <h:dataTable value="#{lancamentoBean.lancamentos}" var="l" cellspacing="3" border="1">
             <h:column>
                 <f:facet name="header">
@@ -92,6 +110,12 @@
                 </f:facet>
                 <h:outputText value="#{l.auditada}"/>
             </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Data de vencimento"/>
+                </f:facet>
+                <h:outputText value="#{l.dataVecimento}"/>
+            </h:column>
             <h:column rendered="#{usuarioBean.permiteAcesso('adm')}">
                 <f:facet name="header">
                     <h:outputText value="Ações"/>
@@ -106,8 +130,21 @@
                 </h:commandLink>
             </h:column>
         </h:dataTable>
-
     </h:form>
 
 </h:body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

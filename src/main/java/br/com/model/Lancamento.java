@@ -2,6 +2,7 @@ package br.com.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,6 +22,9 @@ public class Lancamento implements Serializable {
     private Usuario usuario;
     private String auditada;
     private String[] transportadora;
+    @Temporal(TemporalType.DATE)
+    private Date dataVecimento;
+    private String cep;
 
     public Long getId() {
         return id;
@@ -76,6 +80,22 @@ public class Lancamento implements Serializable {
 
     public void setTransportadora(String[] transportadora) {
         this.transportadora = transportadora;
+    }
+
+    public Date getDataVecimento() {
+        return dataVecimento;
+    }
+
+    public void setDataVecimento(Date dataVecimento) {
+        this.dataVecimento = dataVecimento;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
     }
 
     @Override
