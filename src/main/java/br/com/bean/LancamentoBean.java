@@ -5,6 +5,7 @@ import br.com.model.Lancamento;
 import br.com.model.Usuario;
 import br.com.repository.IDaoLancamento;
 import br.com.repository.IDaoLancamentoImpl;
+import com.google.gson.Gson;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -13,6 +14,11 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,6 +71,30 @@ public class LancamentoBean {
     }
 
     public void consultarCep(AjaxBehaviorEvent event){
+        try {
+            URL url = new URL("https://viacep.com.br/ws/"+lancamento.getCep()+"/json");
+            URLConnection connection = url.openConnection();
+            InputStream inputStream = connection.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream,"UTF-8"));
+            String cep = null;
+            StringBuilder jsonCep = new StringBuilder();
+            while ((cep = reader.readLine())!=null){
+                jsonCep.append(cep);
+            }
+            Lancamento lancamentoGson = new Gson().fromJson(jsonCep.toString(),Lancamento.class);
+            lancamento.setCep(lancamentoGson.getCep());
+            lancamento.setLagradouro(lancamentoGson.getLagradouro());
+            lancamento.setBairro(lancamentoGson.getBairro());
+            lancamento.setComplemento(lancamentoGson.getComplemento());
+            lancamento.setLocalidade(lancamentoGson.getLocalidade());
+            lancamento.setUnidade(lancamentoGson.getUnidade());
+            lancamento.setUf(lancamentoGson.getUf());
+            lancamento.setGia(lancamentoGson.getGia());
+            lancamento.setIbge(lancamentoGson.getIbge());
+        }catch (Exception e){
+            mMsg("Erro ao consultar cep "+e);
+            e.printStackTrace();
+        }
         System.out.printf("metodo executado "+lancamento.getCep());
     }
 

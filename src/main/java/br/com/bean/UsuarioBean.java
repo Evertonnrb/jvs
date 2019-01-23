@@ -10,6 +10,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +59,7 @@ public class UsuarioBean {
     ///home/everton/Development/Java/DevDoj/posjava/web/cad/usuarios.xhtml
     public String logar() {
 
-        usuario= iDaoUsuario.consultarUsuario(usuario.getEmail(), usuario.getSenha());
+        usuario = iDaoUsuario.consultarUsuario(usuario.getEmail(), usuario.getSenha());
         if (usuario != null) {
             FacesContext context = FacesContext.getCurrentInstance();
             ExternalContext externalContext = context.getExternalContext();
@@ -67,7 +69,18 @@ public class UsuarioBean {
         return "index.xhtml";
     }
 
-    public boolean permiteAcesso(String acesso){
+    public String logout() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = context.getExternalContext();
+        externalContext.getSessionMap().remove("usuarioLogado");
+        HttpServletRequest httpServletRequest = (HttpServletRequest)
+                context.getExternalContext().getRequest();
+        httpServletRequest.getSession().invalidate();
+        return "index.xhtml";
+    }
+
+
+    public boolean permiteAcesso(String acesso) {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext externalContext = context.getExternalContext();
         Usuario user = (Usuario) externalContext.getSessionMap().get("usuarioLogado");

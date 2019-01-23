@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 <h:head>
     <title>Pagina de lançamentos</title>
 </h:head>
@@ -54,8 +55,24 @@
 
             <h:outputText value="CEP"/>
             <h:inputText value="#{lancamentoBean.lancamento.cep}" id="cep">
-                <f:ajax event="blur" execute="this" listener="#{lancamentoBean.consultarCep}"/>
+                <f:ajax event="blur" execute="this" listener="#{lancamentoBean.consultarCep}"
+                render="complemento lagradouro bairro cidade uf"/>
             </h:inputText>
+
+            <h:outputText value="Complemento"/>
+            <h:inputText value="#{lancamentoBean.lancamento.complemento}" id="complemento"/>
+
+            <h:outputText value="Rua"/>
+            <h:inputText value="#{lancamentoBean.lancamento.lagradouro}" id="lagradouro"/>
+
+            <h:outputText value="Bairro"/>
+            <h:inputText value="#{lancamentoBean.lancamento.bairro}" id="bairro"/>
+
+            <h:inputText value="Cidade"/>
+            <h:inputText value="#{lancamentoBean.lancamento.localidade}" id="cidade"/>
+
+            <h:outputText value="Estado"/>
+            <h:inputText value="#{lancamentoBean.lancamento.uf}" id="uf"/>
 
             <h:outputText value="Transportadora"/>
             <h:selectManyCheckbox value="#{lancamentoBean.lancamento.transportadora}" required="true" validatorMessage="Selecione ao menos uma transportadora">
