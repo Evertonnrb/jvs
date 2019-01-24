@@ -1,17 +1,21 @@
 package br.com.bean;
 
 import br.com.dao.GenericDao;
+import br.com.model.Cidade;
+import br.com.model.Estado;
 import br.com.model.Usuario;
-import br.com.repository.IDaoImpl;
+import br.com.repository.IDaoUsuarioImpl;
 import br.com.repository.IDaoUsuario;
+import br.com.util.JPAUtil;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +26,9 @@ public class UsuarioBean {
     private Usuario usuario = new Usuario();
     private GenericDao<Usuario> dao = new GenericDao<Usuario>();
     private List<Usuario> usuarios = new ArrayList<Usuario>();
-    private IDaoUsuario iDaoUsuario = new IDaoImpl();
+    private IDaoUsuario iDaoUsuario = new IDaoUsuarioImpl();
+    private List<SelectItem> listaEstados;
+    private List<SelectItem> cidades;
 
     public String novoUsuario() {
         dao.salvar(usuario);
@@ -87,6 +93,27 @@ public class UsuarioBean {
         return user.getPerfil().equals(acesso);
     }
 
+    public void carregaCidades(AjaxBehaviorEvent event) {
+        String codEstado = (String) event.getComponent().getAttributes().get("submittedValue");
+        if (codEstado != null) {
+            Estado estado = JPAUtil.EntityManagergetEmf().find(Estado.class, Long.parseLong(codEstado));
+            if(estado!=null){
+                usuario.setEstado(estado);
+                List<Cidade> cidades = JPAUtil.EntityManagergetEmf()
+                                                .createQuery("from Cidade where estado.id = "+codEstado)
+                                                .getResultList();
+                List<SelectItem> selectItemsCidades = new ArrayList<SelectItem>();
+                for (Cidade c : cidades){
+                    selectItemsCidades.add(new SelectItem(c.getId(),c.getNome()));
+                }
+                /*List<SelectItem> items = new ArrayList<>();
+                items = iDaoUsuario.buscarCidadePorCodEstado(estado.getId());
+                setCidades(items);*/
+                setCidades(selectItemsCidades);
+            }
+        }
+    }
+
     @PostConstruct
     public void carregarUsuarios() {
         usuarios = dao.getLista(Usuario.class);
@@ -115,4 +142,33 @@ public class UsuarioBean {
     public void setUsuarios(List<Usuario> usuarios) {
         this.usuarios = usuarios;
     }
+
+
+    public IDaoUsuario getiDaoUsuario() {
+        return iDaoUsuario;
+    }
+
+    public void setiDaoUsuario(IDaoUsuario iDaoUsuario) {
+        this.iDaoUsuario = iDaoUsuario;
+    }
+
+    public List<SelectItem> getListaEstados() {
+        listaEstados = iDaoUsuario.estados();
+        return listaEstados;
+    }
+
+    public void setListaEstados(List<SelectItem> listaEstados) {
+        this.listaEstados = listaEstados;
+    }
+
+    public List<SelectItem> getCidades() {
+        return cidades;
+    }
+
+    public void setCidades(List<SelectItem> cidades) {
+        this.cidades = cidades;
+    }
 }
+
+
+

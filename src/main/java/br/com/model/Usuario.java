@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity(name = "usuario")
-@Table(name = "usuario",schema = "public")
+@Table(name = "usuario", schema = "public")
 public class Usuario implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,12 +19,16 @@ public class Usuario implements Serializable {
     private String[] frameworks;
     private String perfil;
     private String sexo;
+    @ManyToOne
+    private Cidade cidade;
+    @Transient
+    private Estado estado;
 
     public Usuario() {
     }
 
     public Usuario(String nome, String sobrenome, String email,
-                   String senha, boolean ativo, Integer idade, String[] frameworks, String perfil,String sexo) {
+                   String senha, boolean ativo, Integer idade, String[] frameworks, String perfil, String sexo) {
         this.nome = nome;
         this.sobrenome = sobrenome;
         this.email = email;
@@ -114,6 +118,22 @@ public class Usuario implements Serializable {
 
     public void setSexo(String sexo) {
         this.sexo = sexo;
+    }
+
+    public Cidade getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(Cidade cidade) {
+        this.cidade = cidade;
+    }
+
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
     }
 }
 

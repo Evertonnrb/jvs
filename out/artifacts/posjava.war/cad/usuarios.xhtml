@@ -62,6 +62,19 @@
                 <f:selectItem itemLabel="spring-boot" itemValue="Spring BOOT"/>
             </h:selectManyMenu>
 
+            <h:outputText value="Estados"/>
+            <h:selectOneMenu value="#{usuarioBean.usuario.estado}" immediate="true">
+                <f:selectItem itemLabel="-[-Selecione-]-" noSelectionOption="true"/>
+                <f:selectItems value="#{usuarioBean.listaEstados}"/>
+                <f:ajax event="change" execute="this" listener="#{usuarioBean.carregaCidades}" render="cbCidade"/>
+            </h:selectOneMenu>
+
+            <h:outputText value="Cidades"/>
+            <h:selectOneMenu value="#{usuarioBean.usuario.cidade}" id="cbCidade" immediate="true">
+                <f:selectItem itemLabel="Selecione"/>
+                <f:selectItems value="#{usuarioBean.cidades}"/>
+            </h:selectOneMenu>
+
             <h:panelGrid columns="5">
                 <h:commandButton action="#{usuarioBean.novo}" value="Novo"/>
                 <h:commandButton action="#{usuarioBean.merge}" value="Cadastrar"/>

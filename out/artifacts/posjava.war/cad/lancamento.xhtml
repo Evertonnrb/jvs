@@ -28,7 +28,7 @@
             <h:outputText value="Número da nota fiscal"/>
             <h:inputText value="#{lancamentoBean.lancamento.numeroNotaFiscal}" required="true"
                          validatorMessage="Número da nota deve ter no min 3 e no maxímo 50 carteres"
-                         requiredMessage="Número da nota deve ser informado">
+                         requiredMessage="Número da nota deve ser informado" pt:placehoder="Número da nota">
                 <f:validateLength minimum="8" maximum="50"/>
             </h:inputText>
 
