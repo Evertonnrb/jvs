@@ -3,6 +3,7 @@ package br.com.filter;
 import br.com.model.Usuario;
 import br.com.util.JPAUtil;
 
+import javax.inject.Inject;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -13,9 +14,12 @@ import java.io.IOException;
 @WebFilter(urlPatterns = {"/*"})
 public class FiltroAutenticacao implements Filter {
 
+    @Inject
+    private JPAUtil jpaUtil;
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
+        jpaUtil.EntityManagergetEmf();
     }
 
     @Override
@@ -35,6 +39,6 @@ public class FiltroAutenticacao implements Filter {
 
     @Override
     public void destroy() {
-        JPAUtil.EntityManagergetEmf();
+        jpaUtil.EntityManagergetEmf().close();
     }
 }

@@ -7,18 +7,73 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head>
     <title>Login</title>
+    <style type="text/css">
+        .tudo {
+            background-color: #cacaca;
+            color: #fff;
+        }
+
+        .frm {
+            margin-left: 30%;
+            margin-top: 20%;
+            position: absolute;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            box-sizing: border-box;
+            padding: 70px 30px;
+            border-radius: 2%;
+        }
+
+        .txt {
+            margin: 0;
+            text-align: center;
+            font-size: 22px;
+        }
+        .campo{
+            border: none;
+            border-bottom: 1px solid #fff;
+            background: transparent;
+            outline: none;
+            height: 40px;
+            color: #fff;
+            font-size: 16px;
+            width: 200px;
+        }
+        .bt{
+            border: none;
+            outline: none;
+            height: 40px;
+            width: 200px;
+            background: #bebebe;
+            color: #fff;
+            border-radius: 2px;
+            margin-top: 50px;
+            font-size: 15px;
+            letter-spacing: 2px;
+            font-weight: initial;
+        }
+        .bt:hover{
+            background: #39dc79;
+            cursor: pointer;
+            color: #fff;
+            font-size: 15px;
+            letter-spacing: 2px;
+            font-weight: bold;
+        }
+    </style>
 </h:head>
-<h:body>
-    <h:form style="margin-left: 40%;margin-top: 10%">
+<h:body styleClass="tudo">
+    <h:form id="frmLogin" styleClass="frm">
         <h:panelGrid columns="2">
-            <h:outputText value="Entrar no sistema"/>
+            <h:outputText value="Entrar no sistema" styleClass="txt"/>
             <h:outputText/>
             <h:outputText value="Login"/>
-            <h:inputText value="#{usuarioBean.usuario.email}"/>
+            <h:inputText value="#{usuarioBean.usuario.email}" styleClass="campo"/>
             <h:outputText value="Senha"/>
-            <h:inputSecret value="#{usuarioBean.usuario.senha}"/>
-            <h:commandButton value="Logar" action="#{usuarioBean.logar}"/>
+            <h:inputSecret value="#{usuarioBean.usuario.senha}" styleClass="campo"/>
+            <h:commandButton value="Logar" action="#{usuarioBean.logar}" styleClass="bt"/>
         </h:panelGrid>
     </h:form>
+
 </h:body>
 </html>

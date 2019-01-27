@@ -20,7 +20,10 @@
             <h:inputText value="#{usuarioBean.usuario.id}" readonly="true"/>
 
             <h:outputText value="Nome:"/>
-            <h:inputText value="#{usuarioBean.usuario.nome}"/>
+            <h:inputText value="#{usuarioBean.usuario.nome}"
+                         required="true"
+                         requiredMessage="Nome deve ser informado"
+                         maxlength="50"/>
 
             <h:outputText value="Sobrenome"/>
             <h:inputText value="#{usuarioBean.usuario.sobrenome}"/>
@@ -63,15 +66,14 @@
             </h:selectManyMenu>
 
             <h:outputText value="Estados"/>
-            <h:selectOneMenu value="#{usuarioBean.usuario.estado}" immediate="true">
-                <f:selectItem itemLabel="-[-Selecione-]-" noSelectionOption="true"/>
+            <h:selectOneMenu value="#{usuarioBean.usuario.estado}" immediate="true" id="cbEstados" converter="estadoConverter">
+                <f:selectItem itemLabel="Selecione" noSelectionOption="true"/>
                 <f:selectItems value="#{usuarioBean.listaEstados}"/>
                 <f:ajax event="change" execute="this" listener="#{usuarioBean.carregaCidades}" render="cbCidade"/>
             </h:selectOneMenu>
 
             <h:outputText value="Cidades"/>
-            <h:selectOneMenu value="#{usuarioBean.usuario.cidade}" id="cbCidade" immediate="true">
-                <f:selectItem itemLabel="Selecione"/>
+            <h:selectOneMenu value="#{usuarioBean.usuario.cidade}" id="cbCidade" converter="cidadeConverter">
                 <f:selectItems value="#{usuarioBean.cidades}"/>
             </h:selectOneMenu>
 

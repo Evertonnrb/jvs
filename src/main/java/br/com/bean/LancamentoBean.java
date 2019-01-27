@@ -10,10 +10,12 @@ import com.google.gson.Gson;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -23,13 +25,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ViewScoped
-@ManagedBean(name = "lancamentoBean")
+@Named(value = "lancamentoBean")
 public class LancamentoBean {
 
     private Lancamento lancamento = new Lancamento();
+
     private GenericDao<Lancamento> dao = new GenericDao<Lancamento>();
     private List<Lancamento> lancamentos = new ArrayList<>();
-    private IDaoLancamento iDaoLancamento = new IDaoLancamentoImpl();
+    @Inject
+    private IDaoLancamento iDaoLancamento;
 
     public String salvar(){
         FacesContext context = FacesContext.getCurrentInstance();
@@ -122,3 +126,4 @@ public class LancamentoBean {
         this.lancamentos = lancamentos;
     }
 }
+

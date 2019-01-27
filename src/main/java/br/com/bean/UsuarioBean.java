@@ -10,23 +10,34 @@ import br.com.util.JPAUtil;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.model.SelectItem;
+import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.persistence.EntityTransaction;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
 @ViewScoped
-@ManagedBean(name = "usuarioBean")
+@Named(value = "usuarioBean")
 public class UsuarioBean {
 
     private Usuario usuario = new Usuario();
-    private GenericDao<Usuario> dao = new GenericDao<Usuario>();
     private List<Usuario> usuarios = new ArrayList<Usuario>();
-    private IDaoUsuario iDaoUsuario = new IDaoUsuarioImpl();
+
+    @Inject
+    private GenericDao<Usuario> dao;
+    @Inject
+    private IDaoUsuario iDaoUsuario;
+
+    @Inject
+    private JPAUtil jpaUtil;
+
     private List<SelectItem> listaEstados;
     private List<SelectItem> cidades;
 
@@ -94,24 +105,22 @@ public class UsuarioBean {
     }
 
     public void carregaCidades(AjaxBehaviorEvent event) {
-        String codEstado = (String) event.getComponent().getAttributes().get("submittedValue");
-        if (codEstado != null) {
-            Estado estado = JPAUtil.EntityManagergetEmf().find(Estado.class, Long.parseLong(codEstado));
-            if(estado!=null){
-                usuario.setEstado(estado);
-                List<Cidade> cidades = JPAUtil.EntityManagergetEmf()
-                                                .createQuery("from Cidade where estado.id = "+codEstado)
-                                                .getResultList();
-                List<SelectItem> selectItemsCidades = new ArrayList<SelectItem>();
-                for (Cidade c : cidades){
-                    selectItemsCidades.add(new SelectItem(c.getId(),c.getNome()));
-                }
-                /*List<SelectItem> items = new ArrayList<>();
-                items = iDaoUsuario.buscarCidadePorCodEstado(estado.getId());
-                setCidades(items);*/
-                setCidades(selectItemsCidades);
+
+        Estado estado = (Estado) ((HtmlSelectOneMenu) event.getSource()).getValue();
+        if (estado != null) {
+            usuario.setEstado(estado);
+            List<SelectItem> selectItemsCidades = new ArrayList<SelectItem>();
+            EntityTransaction transaction = jpaUtil.EntityManagergetEmf().getTransaction();
+            transaction.begin();
+            List<Cidade> cidades = jpaUtil.EntityManagergetEmf()
+                    .createQuery("from Cidade where estado.id = " + estado.getId())
+                    .getResultList();
+            for (Cidade c : cidades) {
+                selectItemsCidades.add(new SelectItem(c, c.getNome()));
             }
+            setCidades(selectItemsCidades);
         }
+
     }
 
     @PostConstruct

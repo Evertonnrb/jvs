@@ -1,6 +1,10 @@
 package br.com.model;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -11,10 +15,13 @@ public class Usuario implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String nome;
+    @NotNull(message = "informe o sobrenome")
+    @NotEmpty(message = "Digite seu sobrenome")
     private String sobrenome;
     private String email;
     private String senha;
     private boolean ativo;
+    @DecimalMin(value = "50",message = "Idade tem ser menor que 50")
     private Integer idade;
     private String[] frameworks;
     private String perfil;
